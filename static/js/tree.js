@@ -1,9 +1,8 @@
 function drawTree(data_for_tree){
-	"use strict"
 
-	console.log(data_for_tree)
 
-	var diameter = 960;
+	// var diameter = 960;
+	var diameter = 640
 
 	var tree = d3.layout.tree()
 		.size([360, diameter / 2 - 120])
@@ -12,13 +11,13 @@ function drawTree(data_for_tree){
 	var diagonal = d3.svg.diagonal.radial()
 		.projection(function(d) { return [d.y, d.x / 180 * Math.PI]; });
 
-
 	d3.select("#tree").selectAll("svg").remove();
 
 	var svg = d3.select("#tree").append("svg")
 		.attr("width", diameter)
-		.attr("height", diameter - 150)
+		.attr("height", diameter)
 		.append("g")
+		.attr("id","treesvg")
 		.attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
 
 	d3.json(data_for_tree, function(error, root) {
@@ -42,11 +41,13 @@ function drawTree(data_for_tree){
 		node.append("circle")
 			.attr("r", 4.5);
 
-
+		// node.append("text")
+		// 	.attr("dy", ".31em")
+		// 	.attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
+		// 	.attr("transform", function(d) { return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)"; })
+		// 	.text(function(d) { return d.name; });
 	});
 
 	d3.select(self.frameElement).style("height", diameter - 150 + "px");
-	
-	console.log("tree.js finished")
 	
 };

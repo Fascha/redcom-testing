@@ -3,24 +3,34 @@
 
 <head>
 
-	<link rel="stylesheet" href="/static/css/tree.css">
-	<script src="https://d3js.org/d3.v3.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<link rel="stylesheet" href="../static/css/tree.css">
+	<!-- jQuery version 3.1.0 -->
+	<script src="../static/js/jquery-3.1.0.js"></script>
+	<!--d3 version 3.5.17-->
+	<script src="../static/js/d3.min.js"></script>
+	<!--<script src="https://d3js.org/d3.v3.min.js"></script>-->
+
+
+
 
 </head>
 
 <body>
-	<div id="tree">
+	<div id="tree_visualisation">
 		<h2>Tree Visualisation</h2>
-	</div>
+        <div id="tree"></div>
 
-	<div id="controls">
-		<label for="thread_url">Enter Thread URL here:</label>
-		<input id="thread_url" type="url", value="">
-		<input id="btn_load_data" type="submit" value="Load Thread">
-	</div>
+        <div id="controls">
+            <label for="text_input_tree_thread_id">Enter Thread ID here:</label>
+            <input id="text_input_tree_thread_id" type="text" value="">
+            <input id="button_tree_load" type="submit" value="Load Thread">
+        </div>
+    </div>
 
-	<script src="/static/js/tree.js"></script>
-	<script src="/static/js/input_controls.js"></script>
+	<!-- JavaScript files here -->
+
+	<script src="../static/js/tree.js"></script>
+    <script src="../static/js/on_site_load.js"></script>
+	<!-- End of JavaScript files-->
 </body>
 
