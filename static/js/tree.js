@@ -1,17 +1,16 @@
 function drawTree(data_for_tree){
 
-
 	// var diameter = 960;
-	var diameter = 640
+	var diameter = 480
 
 	var tree = d3.layout.tree()
-		.size([360, diameter / 2 - 120])
+		.size([360, diameter / 2])
 		.separation(function(a, b) { return (a.parent == b.parent ? 1 : 2) / a.depth; });
 
 	var diagonal = d3.svg.diagonal.radial()
 		.projection(function(d) { return [d.y, d.x / 180 * Math.PI]; });
 
-	d3.select("#tree").selectAll("svg").remove();
+	d3.select("#tree").select("svg").remove();
 
 	var svg = d3.select("#tree").append("svg")
 		.attr("width", diameter)

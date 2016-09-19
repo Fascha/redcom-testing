@@ -60,34 +60,51 @@ class GetThread(Resource):
         return get_thread_by_id(id)
 
 
-
 class GetCommentsTree(Resource):
-    def get(self, id):
-
+    def get(self, id, chart):
+        print(chart)
         thread = get_thread_by_id(id)
 
-        def build_json_for_tree(comments):
+        def build_json_for_tree(comments, curr_lvl):
+            # dict_key = "level: " + str(curr_lvl)
+            if curr_lvl in lvl_dict.keys():
+                lvl_dict[curr_lvl] += 1
+            else:
+                lvl_dict[curr_lvl] = 1
+
             result = []
             for comment in comments:
-                children = build_json_for_tree(comment.replies)
+                children = build_json_for_tree(comment.replies, (curr_lvl+1))
                 if len(children) > 0:
-                    result.append({"children": build_json_for_tree(comment.replies), "name": str(comment.author)})
+                    result.append({"children": children, "name": str(comment.author), "level": curr_lvl})
                 else:
-                    result.append({"name": str(comment.author), "size": 1000})
+
+                    result.append({"name": str(comment.author), "size": len(comment.body), "level": curr_lvl})
+
             return result
 
+        lvl_dict = {}
         json_result = {}
         json_result['name'] = "SUBMISSION"
-        json_result['children'] = build_json_for_tree(thread.comments)
+        json_result['children'] = build_json_for_tree(thread.comments, 0)
+        json_result['level'] = 0
 
-        #return json.dumps(json_result)
-        return jsonify(json_result)
+        lvl_list = []
+        for key in lvl_dict.keys():
+            lvl_list.append({'level': key, 'value': lvl_dict[key]})
+
+        if chart == "tree":
+            return jsonify(json_result)
+        elif chart == "pie":
+            return jsonify(lvl_list)
+        else:
+            return None
 
 ##
 ## Actually setup the Api resource routing here
 ##
 api.add_resource(TodoList, '/todos')
-api.add_resource(GetCommentsTree, '/get_thread_by_id/<id>')
+api.add_resource(GetCommentsTree, '/get_thread_by_id/<id>/<chart>')
 
 
 @app.route("/")

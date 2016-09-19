@@ -1,13 +1,5 @@
 <component name="libraryTable">
-  <library name="D3 - jQuery" type="javaScript">
-    <properties>
-      <option name="frameworkName" value="jQuery" />
-      <option name="frameworkVersion" value="1.0." />
-      <sourceFilesUrls>
-        <item url="file://$PROJECT_DIR$/static/js/d3.js" />
-        <item url="file://$PROJECT_DIR$/static/js/jquery-3.1.0.js" />
-      </sourceFilesUrls>
-    </properties>
+  <library name="D3 - jQuery">
     <CLASSES>
       <root url="file://$PROJECT_DIR$/static/js/d3.js" />
       <root url="file://$PROJECT_DIR$/static/js/jquery-3.1.0.js" />

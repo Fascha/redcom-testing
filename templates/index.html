@@ -4,6 +4,9 @@
 <head>
 
 	<link rel="stylesheet" href="../static/css/tree.css">
+	<link rel="stylesheet" href="../static/css/pie.css">
+
+	<link rel="stylesheet" href="../static/css/grid.css">
 	<!-- jQuery version 3.1.0 -->
 	<script src="../static/js/jquery-3.1.0.js"></script>
 	<!--d3 version 3.5.17-->
@@ -16,20 +19,32 @@
 </head>
 
 <body>
-	<div id="tree_visualisation">
-		<h2>Tree Visualisation</h2>
-        <div id="tree"></div>
-
+	<div id="content"  style="padding-left: 10%; padding-right: 10%" class="grid wfull">
+        <div id="charts" class="row">
+			<div id="tree" class="c8">
+				<h2>Tree Visualisation</h2>
+				<svg width="480" height="480"></svg>
+			</div>
+			<div id="pie" class="c4">
+				<h2>Pie Visualisation</h2>
+				<svg width="360" height="360"></svg>
+				<!--<div id="pie_tooltip"></div>-->
+			</div>
+		</div>
         <div id="controls">
             <label for="text_input_tree_thread_id">Enter Thread ID here:</label>
-            <input id="text_input_tree_thread_id" type="text" value="">
-            <input id="button_tree_load" type="submit" value="Load Thread">
+			<div class="row">
+				<input id="text_input_tree_thread_id" type="text" value="" class="c4">
+				<input id="button_tree_load" type="submit" value="Load Thread" class="c2" style="margin-left: 20px">
+			</div>
         </div>
     </div>
 
 	<!-- JavaScript files here -->
 
 	<script src="../static/js/tree.js"></script>
+	<script src="../static/js/pie.js"></script>
+
     <script src="../static/js/on_site_load.js"></script>
 	<!-- End of JavaScript files-->
 </body>
