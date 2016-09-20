@@ -15,7 +15,7 @@ def get_thread_by_url(url, flat=False):
 	thread = crawler.get_submission(url=url)
 	# thread_id = url.split("/")[6]
 	# thread = crawler.get_submission(submission_id=thread_id)
-	thread.replace_more_comments(limit=None, threshold=0)
+	# thread.replace_more_comments(limit=None, threshold=0)
 	flat_comments = praw.helpers.flatten_tree(thread.comments)
 	if flat == True:
 		return flat_comments

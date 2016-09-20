@@ -78,7 +78,13 @@ function drawPie(data_for_pie){
         legend.append('text')
             .attr('x', legendRectSize + legendSpacing)
             .attr('y', legendRectSize - legendSpacing)
-            .text(function(d) { return "Level: " + d; });
+            .text(function(d) {
+                if (d >= 8) {
+                    return "Level >=9"
+                } else {
+                    return "Level " + (d+1);
+                }
+            });
 
 
         var tooltip = d3.select('#pie')
