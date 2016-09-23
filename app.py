@@ -65,7 +65,8 @@ class GetCommentsTree(Resource):
 
     def get(self, id, chart):
         print(chart)
-
+        global its
+        its = 0
         global data_to_return
         if id in data_to_return:
             if chart == "tree":
@@ -76,53 +77,86 @@ class GetCommentsTree(Resource):
                 return None
 
         thread = get_thread_by_id(id)
-        def build_json_for_tree(comments, curr_lvl):
+        # def build_json_for_tree(comments, curr_lvl):
+        #     if curr_lvl in lvl_dict.keys():
+        #         lvl_dict[curr_lvl] += 1
+        #     else:
+        #         lvl_dict[curr_lvl] = 1
+        #
+        #     result = []
+        #
+        #     for comment in comments:
+        #         if type(comment).__name__ == "Comment":
+        #             children = build_json_for_tree(comment.replies, (curr_lvl+1))
+        #             if len(children) > 0:
+        #                 result.append({"children": children, "name": str(comment.author), "level": curr_lvl})
+        #             else:
+        #                 result.append({"name": str(comment.author), "size": len(comment.body), "level": curr_lvl})
+        #         elif type(comment).__name__ == "MoreComments":
+        #             # for com in comment.comments():
+        #             #     print(com)
+        #             # result.append(build_json_for_tree(comment.comments(), curr_lvl))
+        #             try:
+        #                 next_comments = comment.comments()
+        #                 if len(next_comments) > 0:
+        #
+        #                     for com in next_comments:
+        #                         if type(com).__name__== "Comment":
+        #                             children = build_json_for_tree(com.replies, (curr_lvl + 1))
+        #                             if len(children) > 0:
+        #                                 result.append({"children": children, "name": str(com.author), "level": curr_lvl})
+        #                             else:
+        #                                 result.append({"name": str(com.author), "size": len(com.body), "level": curr_lvl})
+        #                         elif type(comment).__name__ == "MoreComments":
+        #                             for com2 in comment.comments():
+        #                                 if type(com).__name__ == "Comment":
+        #                                     children = build_json_for_tree(com2.replies, (curr_lvl + 1))
+        #                                     if len(children) > 0:
+        #                                         result.append(
+        #                                             {"children": children, "name": str(com2.author), "level": curr_lvl})
+        #                                     else:
+        #                                         result.append(
+        #                                             {"name": str(com.author), "size": len(com2.body), "level": curr_lvl})
+        #             except:
+        #                 print("ERROR")
+        #
+        #     return result
+
+        def parse_comments(comments, curr_lvl):
+            global its
+            print(its)
+            its += 1
             if curr_lvl in lvl_dict.keys():
                 lvl_dict[curr_lvl] += 1
             else:
                 lvl_dict[curr_lvl] = 1
 
             result = []
-
             for comment in comments:
                 if type(comment).__name__ == "Comment":
-                    children = build_json_for_tree(comment.replies, (curr_lvl+1))
+                    children = parse_comments(comment.replies, (curr_lvl + 1))
                     if len(children) > 0:
                         result.append({"children": children, "name": str(comment.author), "level": curr_lvl})
                     else:
                         result.append({"name": str(comment.author), "size": len(comment.body), "level": curr_lvl})
+
                 elif type(comment).__name__ == "MoreComments":
-                    # for com in comment.comments():
-                    #     print(com)
-                    # result.append(build_json_for_tree(comment.comments(), curr_lvl))
-
-                    next_comments = comment.comments()
-                    if len(next_comments) > 0:
-
-                        for com in next_comments:
-                            if type(com).__name__== "Comment":
-                                children = build_json_for_tree(com.replies, (curr_lvl + 1))
-                                if len(children) > 0:
-                                    result.append({"children": children, "name": str(com.author), "level": curr_lvl})
-                                else:
-                                    result.append({"name": str(com.author), "size": len(com.body), "level": curr_lvl})
-                            elif type(comment).__name__ == "MoreComments":
-                                for com2 in comment.comments():
-                                    if type(com).__name__ == "Comment":
-                                        children = build_json_for_tree(com2.replies, (curr_lvl + 1))
-                                        if len(children) > 0:
-                                            result.append(
-                                                {"children": children, "name": str(com2.author), "level": curr_lvl})
-                                        else:
-                                            result.append(
-                                                {"name": str(com.author), "size": len(com2.body), "level": curr_lvl})
+                    try:
+                        load_more_comments = comment.comments()
+                        if len(load_more_comments) > 0:
+                            more_comments = parse_comments(load_more_comments, curr_lvl)
+                            for com in more_comments:
+                                result.append(com)
+                    except:
+                        print("loading more comments failed")
 
             return result
 
         lvl_dict = {}
         json_result = {}
         json_result['name'] = "SUBMISSION"
-        json_result['children'] = build_json_for_tree(thread.comments, 0)
+        # json_result['children'] = build_json_for_tree(thread.comments, 0)
+        json_result['children'] = parse_comments(thread.comments, 0)
         json_result['level'] = 0
 
         lvl_list = []
@@ -137,12 +171,6 @@ class GetCommentsTree(Resource):
         if lvl_gt9 > 0:
             lvl_list.append({'level': '>=9', 'value': lvl_gt9})
 
-        # if chart == "tree":
-        #     return jsonify(json_result)
-        # elif chart == "pie":
-        #     return jsonify(lvl_list)
-        # else:
-        #     return None
         data_to_return[id] = {"tree": jsonify(json_result), "pie": jsonify(lvl_list)}
         if chart == "tree":
             return data_to_return[id]["tree"]
