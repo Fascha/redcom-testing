@@ -2,8 +2,8 @@ function drawPie(data_for_pie){
 
 	d3.select("#pie").select("svg").remove();
 
-    var width = 480,
-        height = 480,
+    var width = 360,
+        height = 360,
         radius = Math.min(width, height) / 2,
         color = d3.scale.category20c(),
         legendRectSize = 18,
@@ -18,7 +18,7 @@ function drawPie(data_for_pie){
             numOfCommentsTotal += (json[i].value);
         }
 
-        console.log(numOfCommentsTotal)
+        console.log(numOfCommentsTotal);
 
         var vis = d3.select("#pie").append("svg").data([json])
             .attr("width", width)
@@ -87,24 +87,35 @@ function drawPie(data_for_pie){
             });
 
 
-        var tooltip = d3.select('#pie')
-            .append('div')
-            .attr('class', 'tooltip');
+        var tooltip = d3.select('#pie').append('div')
+            .attr('class', 'tooltip')
+            .style("opacity", 0);
 
-        tooltip.append('div')
-            .attr('class', 'count');
+        // tooltip.append('div')
+        //     .attr('class', 'count');
 
 
-        arcs.on("mousemove", function(d){
-            tooltip.style("left", d3.event.pageX - $("#pie").position().left - $(".tooltip").outerWidth()/2 + "px");
-            tooltip.style("top", d3.event.pageY - 75 + "px");
-            tooltip.style("display", "inline-block");
+        arcs.on("mouseover", function(d){
 
-            tooltip.html("Num of Comments: " + d.data.value + "<br>" + "Percent: " + (d.data.value/numOfCommentsTotal).toFixed(2))
+            // tooltip.style("left", d3.event.pageX - $("#pie").position().left - $(".tooltip").outerWidth()/2 + "px");
+            // tooltip.style("top", d3.event.pageY - 75 + "px");
+            // tooltip.style("display", "inline-block");
+            // tooltip.html("Num of Comments: " + d.data.value + "<br>" + "Percent: " + (d.data.value/numOfCommentsTotal).toFixed(2))
+
+            tooltip.transition()
+                .duration(25)
+                .style("opacity", .9);
+            tooltip.html("Num of Comments: " + d.data.value
+                + "<br>Percent: " + (d.data.value/numOfCommentsTotal).toFixed(2))
+                .style("left", (d3.event.pageX - $("#pie").position().left + 5) + "px")
+                .style("top", (d3.event.pageY - 100) + "px");
         });
 
         arcs.on('mouseout', function(d) {
-            tooltip.style('display', 'none');
+            // tooltip.style('display', 'none');
+            tooltip.transition()
+                .duration(500)
+                .style("opacity", 0);
         });
 
     });

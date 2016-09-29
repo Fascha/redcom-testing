@@ -1,7 +1,9 @@
 function drawTree(data_for_tree){
 
-	// var diameter = 960;
-	var diameter = 480
+    d3.select("#tree").select("svg").remove();
+
+
+	var diameter = 360
 
 	var tree = d3.layout.tree()
 		.size([360, diameter / 2 - 20])
@@ -10,7 +12,7 @@ function drawTree(data_for_tree){
 	var diagonal = d3.svg.diagonal.radial()
 		.projection(function(d) { return [d.y, d.x / 180 * Math.PI]; });
 
-	d3.select("#tree").select("svg").remove();
+
 
 	var svg = d3.select("#tree").append("svg")
 		.attr("width", diameter)

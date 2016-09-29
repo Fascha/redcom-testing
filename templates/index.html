@@ -5,47 +5,66 @@
 
 	<link rel="stylesheet" href="../static/css/tree.css">
 	<link rel="stylesheet" href="../static/css/pie.css">
+	<link rel="stylesheet" href="../static/css/timeseries.css">
 
 	<link rel="stylesheet" href="../static/css/grid.css">
 	<!-- jQuery version 3.1.0 -->
 	<script src="../static/js/jquery-3.1.0.js"></script>
 	<!--d3 version 3.5.17-->
 	<script src="../static/js/d3.min.js"></script>
+	<script src="../static/js/spin.min.js"></script>
+
+
+
 	<!--<script src="https://d3js.org/d3.v3.min.js"></script>-->
 
 
+	<link rel="shortcut icon" href="">
 
 
 </head>
 
 <body>
-	<div id="content"  style="padding-left: 10%; padding-right: 10%" class="grid wfull">
-        <div id="charts" class="row">
-			<div id="tree" class="c8">
-				<h2>Tree Visualisation</h2>
-				<svg width="480" height="480"></svg>
-			</div>
-			<div id="pie" class="c4">
-				<h2>Pie Visualisation</h2>
-				<svg width="360" height="360"></svg>
-				<!--<div id="pie_tooltip"></div>-->
-			</div>
-		</div>
-        <div id="controls">
-            <label for="text_input_tree_thread_id">Enter Thread ID here:</label>
+	<div id="content" class="grid w1200">
+		<div id="controls">
+			<label for="text_input_tree_thread_id">Enter Thread ID here:</label>
 			<div class="row">
-				<input id="text_input_tree_thread_id" type="text" value="" class="c4">
+				<input id="text_input_tree_thread_id" type="text" value="54y0al" class="c4">
 				<input id="button_tree_load" type="submit" value="Load Thread" class="c2" style="margin-left: 20px">
 			</div>
-        </div>
+		</div>
+		<div id="spinner-box"></div>
+		<div id="charts" class="row">
+			<div id="tree_and_pie" class="row">
+				<div id="tree" class="c8">
+					<h2>Tree Visualisation</h2>
+
+					<svg></svg>
+				</div>
+				<div id="pie" class="c4">
+					<h2>Pie Visualisation</h2>
+					<svg></svg>
+					<!--<div id="pie_tooltip"></div>-->
+				</div>
+			</div>
+			<div id="timeseries" class="row">
+				<h2>Timeseries</h2>
+				<svg width="1200" height="360"></svg>
+			</div>
+		</div>
+
     </div>
+
 
 	<!-- JavaScript files here -->
 
 	<script src="../static/js/tree.js"></script>
 	<script src="../static/js/pie.js"></script>
 
-    <script src="../static/js/on_site_load.js"></script>
+	<script src="../static/js/timeseries.js"></script>
+
+
+	<script src="../static/js/on_site_load.js"></script>
 	<!-- End of JavaScript files-->
 </body>
 

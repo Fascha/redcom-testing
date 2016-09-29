@@ -8,23 +8,14 @@ crawler.config.store_json_result = True
 
 def get_thread_by_id(thread_id):
 	thread = crawler.get_submission(submission_id=thread_id)
+	thread.replace_more_comments(limit=None, threshold=0)
 	return thread
 
 
-def get_thread_by_url(url, flat=False):
+def get_thread_by_url(url):
 	thread = crawler.get_submission(url=url)
-	# thread_id = url.split("/")[6]
-	# thread = crawler.get_submission(submission_id=thread_id)
-	# thread.replace_more_comments(limit=None, threshold=0)
-	flat_comments = praw.helpers.flatten_tree(thread.comments)
-	if flat == True:
-		return flat_comments
-	else:
-		return thread
+	thread.replace_more_comments(limit=None, threshold=0)
+	# flat_comments = praw.helpers.flatten_tree(thread.comments)
 
-
-def get_subreddit():
-	subreddit = crawler.get_subreddit('diablo')
-	return subreddit
-
+	return thread
 
