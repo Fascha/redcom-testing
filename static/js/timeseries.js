@@ -8,7 +8,7 @@ function drawTimeSeries(data_for_timeseries){
     // var width = 1200,
     //     height = 360;
 
-    var margin = {top: 20, right: 20, bottom: 30, left: 40},
+    var margin = {top: 20, right: 40, bottom: 50, left: 40},
         width = 960 - margin.left - margin.right,
         height = 360 - margin.top - margin.bottom;
 
@@ -80,8 +80,8 @@ function drawTimeSeries(data_for_timeseries){
             .y(function(d) {
                 var ts = d3.time.hour(new Date(d.created_utc * 1000));
                 var res = bintest[ts] / comcount[ts];
-                console.log(res);
-                console.log(y2Map(res))
+                // console.log(res);
+                // console.log(y2Map(res))
                 return y2Map(res);
             });
 
@@ -100,20 +100,31 @@ function drawTimeSeries(data_for_timeseries){
             .style("opacity", 0);
 
 
-        var color = d3.scale.category10();
+        // var color = d3.scale.category10();
 
         // x-axis
         svg.append("g")
             .attr("class", "x axis")
-            .attr("transform", "translate(0," + yScale(0) + ")")
+            // .attr("transform", "translate(0," + yScale(0) + ")")
+            .attr("transform", "translate(0," + height + ")")
             .attr("id", "x-axis")
             .call(xAxis)
             .append("text")
             .attr("class", "label")
             .attr("x", width/2)
             .attr("y", 40)
-            .style("text-anchor", "end")
+            .style("text-anchor", "middle")
             .text("Timestamp");
+
+
+        svg.append("line")
+            .attr("x1", xScale(startDate))
+            .attr("y1", yScale(0))
+            .attr("x2", xScale(endDate))
+            .attr("y2", yScale(0))
+            .style("stroke-width", 1)
+            .style("stroke", "grey")
+            .style("fill", "none");
 
         // y-axis-score
         svg.append("g")
@@ -127,18 +138,18 @@ function drawTimeSeries(data_for_timeseries){
             .style("text-anchor", "end")
             .text("Score");
 
-        // y-axis-avg-score
-        svg.append("g")
-            .attr("class", "y axis")
-            .attr("transform", "translate(" + (width-6) + ",0)")
-            .call(y2Axis)
-            .append("text")
-            .attr("class", "label")
-            .attr("transform", "rotate(-90)")
-            .attr("y", -20)
-            .attr("dy", ".71em")
-            .style("text-anchor", "end")
-            .text("AVG-Score");
+        // // y-axis-avg-score
+        // svg.append("g")
+        //     .attr("class", "y axis")
+        //     .attr("transform", "translate(" + (width-6) + ",0)")
+        //     .call(y2Axis)
+        //     .append("text")
+        //     .attr("class", "label")
+        //     .attr("transform", "rotate(-90)")
+        //     .attr("y", -20)
+        //     .attr("dy", ".71em")
+        //     .style("text-anchor", "end")
+        //     .text("AVG-Score");
 
 
         // draw dots
@@ -169,26 +180,29 @@ function drawTimeSeries(data_for_timeseries){
             });
 
         // draw legend
-        var legend = svg.selectAll(".legend")
-            .data(color.domain())
-            .enter().append("g")
-            .attr("class", "legend")
-            .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+        // var legend = svg.selectAll(".legend")
+        //     .data(color.domain())
+        //     .enter().append("g")
+        //     .attr("class", "legend")
+        //     .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
 
-        // draw legend colored rectangles
-        legend.append("rect")
-            .attr("x", width - 18)
-            .attr("width", 18)
-            .attr("height", 18)
-            .style("fill", color);
 
-        // draw legend text
-        legend.append("text")
-            .attr("x", width - 24)
-            .attr("y", 9)
-            .attr("dy", ".35em")
-            .style("text-anchor", "end")
-            .text(function(d) { return d;})
+        //
+        // // draw legend colored rectangles
+        // legend.append("rect")
+        //     .attr("x", width - 18)
+        //     .attr("width", 18)
+        //     .attr("height", 18)
+        //     .style("fill", color);
+        //
+        // // draw legend text
+        // legend.append("text")
+        //     .attr("x", width - 24)
+        //     .attr("y", 9)
+        //     .attr("dy", ".35em")
+        //     .style("text-anchor", "end")
+        //     .text(function(d) { return d;})
+
 
 
         svg.append("path")
@@ -201,6 +215,23 @@ function drawTimeSeries(data_for_timeseries){
 
         // console.log(bintest);
         // console.log(comcount);
+
+
+        var legend = svg.append("g")
+            .attr("class", "legend");
+
+        legend.append("rect")
+            .attr("x", width - 240)
+            .attr("width", 36)
+            .attr("height", 2)
+            .style("fill", "green");
+
+        legend.append("text")
+            .attr("x", width - 200)
+            // .attr("y", 9)
+            .attr("dy", ".5em")
+
+            .text("AVG Score per Hour")
     });
 
 }
